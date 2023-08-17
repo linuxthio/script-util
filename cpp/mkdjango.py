@@ -46,11 +46,11 @@ from django.shortcuts import render \n
 from django.contrib.auth import authenticate ,login,logout \n
 from django.urls import reverse \n
 from django.http import JsonResponse \n
-from {app}.forms import  RegisterForm ,LoginForm \n
+from app1.forms import  RegisterForm ,LoginForm \n
 from django.contrib.auth.models import User \n
-from {projet}.settings import BASE_DIR \n
+from test2.settings import BASE_DIR \n
 from django.shortcuts import render ,HttpResponseRedirect \n
-from {app}.models import Profil \n
+from app1.models import Profil \n
  \n
  \n
 # Create your views here. \n
@@ -137,28 +137,6 @@ def view_500(request, *args, **kwargs): \n
 \n    
 """
 
-forms = """
-from django import forms\n
-
-class RegisterForm(forms.Form): \n
-    username=forms.CharField(max_length=150,widget=forms.TextInput(attrs={'placeholder':"Votre nom d'utilisateur",'label':''}))\n
-    # lastname=forms.CharField(max_length=150)\n
-    email=forms.EmailField(widget=forms.TextInput(attrs={'placeholder': 'john@gmail.com'}))\n
-    pwd1=forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Votre mot de pass'}))\n
-    pwd2=forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':"Repeter le mot de pass"}))\n
-    tel1=forms.CharField(max_length=12,required=False,widget=forms.TextInput(attrs={'placeholder':"77 000 00 00( optionnel)"}))\n
-    tel2=forms.CharField(max_length=12,required=False,widget=forms.TextInput(attrs={'placeholder':"76 000 00 00( optionnel)"}))\n
-    tel3=forms.CharField(max_length=12,required=False,widget=forms.TextInput(attrs={'placeholder':"70 000 00 00( optionnel)"}))\n
-
-
-
-class LoginForm(forms.Form): \n
-    username=forms.CharField(max_length=200,widget=forms.TextInput(attrs={'placeholder':"Nom d'utilisateur"}))\n
-    pwd=forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':"Votre mot de pass"}))\n
-\n
-
-"""
-
 os.mkdir(f"{app}/templates")
 os.mkdir(f"{app}/templates/{app}")
 
@@ -168,36 +146,13 @@ with open(f"{app}/models.py", "w") as f:
     # for e in v:
     f.write(models)
 
-with open(f"{app}/forms.py", "w") as f:
-    # v = models.split("\n")
-    # for e in v:
-    f.write(forms)
-
-
 with open(f"{app}/views.py", "w") as f:
     # v = views.split("\n")
     # for e in v:
     f.write(views)
 
 
-f = open(f"{app}/templates/{app}/index.html", "w")
-ht = f"""
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{app}</title>
-</head>
-<body>
-    <h1>Bienvenue</h1>
-</body>
-</html>
-
-"""
-f.write(ht)
-f.close()
-
+open(f"{app}/templates/{app}/index.html", "w")
 open(f"{app}/templates/{app}/404.html", "w")
 open(f"{app}/templates/{app}/500.html", "w")
 open(f"{app}/templates/{app}/register.html", "w")
