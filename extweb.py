@@ -1,11 +1,20 @@
 ﻿import sys,os
-app=sys.argv[1]
-from PIL import Image
+from PIL import Image,ImageDraw
+
+if len(sys.argv)==1:
+  print("Entrer le nom de votre extension")
+  app=input()
+else:
+  app=sys.argv[1]
+
+
 im = Image.new('RGB',(48,48))
 for x in range(48):
     for y in range(48):
-        im.putpixel((x,y),(20,255,0))
+        im.putpixel((x,y),(200,255,0))
 
+draw = ImageDraw.Draw(im)
+draw.text((5, 10), app, align ="left",fill="blue")
 json=f"""
 {{
   "manifest_version": 2,

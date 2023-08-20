@@ -1,11 +1,20 @@
 ﻿import os
 import sys
 
-projet = sys.argv[1]
-app = sys.argv[2]
 
-os.system(f"django-admin startproject {projet} .")
-os.system(f"django-admin startapp {app}")
+if len(sys.argv)==1:
+    print("Entrer le nom du projet : ")
+    projet=input()
+    print("Entrer le om de votre application")
+    app=input()
+else:
+    projet = sys.argv[1]
+    app = sys.argv[2]
+print("Creation du projet .....")
+os.system(f"django-admin startproject {projet} ")
+print("Creation de l'application .....")
+os.system(f"cd {projet}")
+os.system(f"cd {projet} ; django-admin startapp {app}")
 
 
 def ecrire(pp, n, l):
@@ -20,7 +29,7 @@ def ecrire(pp, n, l):
     return m
 
 
-l = [f'    "{app}.apps.{app.title()}Config",']
+
 
 # ecrire(f, 50, l)
 
@@ -159,28 +168,28 @@ class LoginForm(forms.Form): \n
 
 """
 
-os.mkdir(f"{app}/templates")
-os.mkdir(f"{app}/templates/{app}")
+os.mkdir(f"{projet}/{app}/templates")
+os.mkdir(f"{projet}/{app}/templates/{app}")
 
 
-with open(f"{app}/models.py", "w") as f:
+with open(f"{projet}/{app}/models.py", "w") as f:
     # v = models.split("\n")
     # for e in v:
     f.write(models)
 
-with open(f"{app}/forms.py", "w") as f:
+with open(f"{projet}/{app}/forms.py", "w") as f:
     # v = models.split("\n")
     # for e in v:
     f.write(forms)
 
 
-with open(f"{app}/views.py", "w") as f:
+with open(f"{projet}/{app}/views.py", "w") as f:
     # v = views.split("\n")
     # for e in v:
     f.write(views)
 
 
-f = open(f"{app}/templates/{app}/index.html", "w")
+f = open(f"{projet}/{app}/templates/{app}/index.html", "w")
 ht = f"""
 <!DOCTYPE html>
 <html lang="en">
@@ -197,11 +206,12 @@ ht = f"""
 """
 f.write(ht)
 f.close()
+print("Creation des fichiers inde.html 404.html 500.html register.html login.html")
 
-open(f"{app}/templates/{app}/404.html", "w")
-open(f"{app}/templates/{app}/500.html", "w")
-open(f"{app}/templates/{app}/register.html", "w")
-open(f"{app}/templates/{app}/login.html", "w")
+open(f"{projet}/{app}/templates/{app}/404.html", "w")
+open(f"{projet}/{app}/templates/{app}/500.html", "w")
+open(f"{projet}/{app}/templates/{app}/register.html", "w")
+open(f"{projet}/{app}/templates/{app}/login.html", "w")
 
 
 def chg(pp, n, l):
@@ -210,7 +220,20 @@ def chg(pp, n, l):
         for e in d:
             f.write(e)
 
+l = [f'    "{app}.apps.{app.title()}Config",']
+print("Ajout de l'application dans setting.py .......")
+chg(f"./{projet}/{projet}/settings.py", 39, l)
+print("Creation de l'url d'accueil ......")
+chg(f"./{projet}/{projet}/urls.py", 18, [f"from {app} import views"])
+chg(f"./{projet}/{projet}/urls.py", 22, ['    path("", view=views.index),'])
 
-chg(f"./{projet}/settings.py", 39, l)
-chg(f"./{projet}/urls.py", 18, [f"from {app} import views"])
-chg(f"./{projet}/urls.py", 22, ['    path("", view=views.index),'])
+os.system(f"python {projet}/manage.py makemigrations")
+os.system(f"python {projet}/manage.py migrate")
+print("Creer un administrateur principal qui a tout les pouvoirs ....")
+os.system(f"python {projet}/manage.py createsuperuser")
+ok=input("Voulez vous lancer le serveur de production:y/N ")
+
+if ok=='y':
+    os.system(f"python {projet}/manage.py runserver")
+
+print("Fin ... Enjoy")
